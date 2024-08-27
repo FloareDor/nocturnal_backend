@@ -1,4 +1,7 @@
 # Nocturnal App Backend
+
+- api docs
+  `localhost:8000/docs`
 - local development
   - environment with configured postgres
   - script to lint code with `ruff` and `ruff format`

@@ -117,9 +117,6 @@ class UserResponse(CustomModel):
     username: str
     full_name: str
     profile_picture_url: str
-    points: int
-    preferred_language: str
-    preferred_currency: str
 
 
 class UserUpdate(CustomModel):

@@ -1,5 +1,6 @@
 [tool.poetry]
 name = "fastapi-template"
+package-mode = false
 version = "0.1.0"
 description = "A template for kickstarting new FastAPI projects"
 authors = ["zhanymkanov"]

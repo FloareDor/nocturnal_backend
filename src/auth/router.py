@@ -24,8 +24,6 @@ from src.auth.schemas import (
 )
 from src.database import get_db_connection, get_supaadmin, get_supabase
 
-# from src.utils import limiter
-
 router = APIRouter()
 
 
@@ -89,7 +87,7 @@ async def user_login(
 
 
 @router.post("/authorize", response_model=AccessTokenResponse, include_in_schema=False)
-async def authorize_swagger_ui(
+async def authorize_swagger(
     request: Request,
     response: Response,
     form_data: OAuth2PasswordRequestForm = Depends(),
