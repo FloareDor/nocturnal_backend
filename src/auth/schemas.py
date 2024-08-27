@@ -142,3 +142,11 @@ class UserUpdate(CustomModel):
 class SocialLogin(CustomModel):
     provider: str
     token: str
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "provider": "google",
+                "token": "google_access_token",
+            }
+        }
