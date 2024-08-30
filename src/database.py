@@ -1,6 +1,6 @@
 import uuid
 from os import environ as env
-from typing import Any
+from typing import Any, AsyncGenerator
 
 from dotenv import find_dotenv, load_dotenv
 from sqlalchemy import (
@@ -10,8 +10,8 @@ from sqlalchemy import (
     Select,
     Update,
 )
-from sqlalchemy.ext.asyncio import AsyncConnection, create_async_engine
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.ext.asyncio import AsyncConnection, AsyncSession, create_async_engine
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from supabase._async.client import AsyncClient as Client
 from supabase._async.client import create_client
 
@@ -27,6 +27,8 @@ key: str = env.get("SUPABASE_KEY")
 # supabase: Client = create_client(url, key)
 
 DATABASE_URL = str(settings.DATABASE_ASYNC_URL)
+
+print("async", DATABASE_URL)
 
 engine = create_async_engine(
     DATABASE_URL,
@@ -76,10 +78,10 @@ async def fetch_all(
 
 async def execute(
     query: Insert | Update,
-    connection: AsyncConnection = None,
+    connection: AsyncConnection | None,
     commit_after: bool = False,
 ) -> None:
-    if not connection:
+    if connection is None:
         async with engine.connect() as connection:
             await _execute_query(query, connection, commit_after)
             return
@@ -99,7 +101,7 @@ async def _execute_query(
     return result
 
 
-async def get_db_connection() -> AsyncConnection:
+async def get_db_connection() -> AsyncGenerator[AsyncConnection, None]:
     connection = await engine.connect()
     try:
         yield connection
@@ -113,3 +115,14 @@ async def get_supabase() -> Client:
 
 async def get_supaadmin() -> Client:
     return await create_client(url, env.get("SUPABASE_SERVICE_ROLE_KEY"))
+
+
+async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+
+
+async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
+    async with async_session() as session:
+        try:
+            yield session
+        finally:
+            await session.close()

@@ -11,11 +11,10 @@ from src.auth.dependencies import (
     user_exists,
     valid_user_create,
 )
-from src.auth.jwt import parse_jwt_user_data, parse_jwt_user_id, validateToken
+from src.auth.jwt import parse_data, parse_jwt_user_id, validateToken
 from src.auth.schemas import (
     AccessTokenResponse,
     AuthorizeCreds,
-    JWTData,
     SocialLogin,
     UserCreate,
     UserLogin,
@@ -23,6 +22,8 @@ from src.auth.schemas import (
     UserUpdate,
 )
 from src.database import get_db_connection, get_supaadmin, get_supabase
+
+# from src.utils import limiter
 
 router = APIRouter()
 
@@ -66,9 +67,9 @@ async def get_my_account(request: Request, user: Any = Depends(user_exists)) -> 
 async def update_profile(
     request: Request,
     user_update: UserUpdate,
-    jwt_data: JWTData = Depends(parse_jwt_user_data),
+    user_id: UUID = Depends(parse_jwt_user_id),
 ) -> UserResponse:
-    updated_user = await service.update_user(jwt_data["sub"], user_update)
+    updated_user = await service.update_user(user_id, user_update)
     return UserResponse(**updated_user)
 
 
@@ -80,6 +81,8 @@ async def user_login(
     supabase: Client = Depends(get_supabase),
 ) -> AccessTokenResponse:
     response = await service.authenticate_user(auth_data, supabase=supabase)
+
+    print("token data:", await parse_data(response.session.access_token))
     return AccessTokenResponse(
         access_token=response.session.access_token,
         refresh_token=response.session.refresh_token,
@@ -100,6 +103,7 @@ async def authorize_swagger(
     )
 
     response = await service.authenticate_user(auth_data, supabase=supabase)
+    print("token data:", await parse_data(response.session.access_token))
     return AccessTokenResponse(
         access_token=response.session.access_token,
         refresh_token=response.session.refresh_token,

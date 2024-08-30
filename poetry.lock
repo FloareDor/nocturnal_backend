@@ -606,6 +606,38 @@ typer = ">=0.12.3"
 standard = ["fastapi", "uvicorn[standard] (>=0.15.0)"]
 
 [[package]]
+name = "fastapi-pagination"
+version = "0.12.26"
+description = "FastAPI pagination"
+optional = false
+python-versions = "<4.0,>=3.8"
+files = [
+    {file = "fastapi_pagination-0.12.26-py3-none-any.whl", hash = "sha256:b59711d162e04b9b67efbdbba388c29bad0aac69da93fefaf0a85e2bb090853d"},
+    {file = "fastapi_pagination-0.12.26.tar.gz", hash = "sha256:40b18c312ed5c3a631106c2f19bb4b8d71b1773c1d83f6ae7555071b13822845"},
+]
+
+[package.dependencies]
+pydantic = ">=1.9.1"
+typing-extensions = ">=4.8.0,<5.0.0"
+
+[package.extras]
+all = ["SQLAlchemy (>=1.3.20)", "asyncpg (>=0.24.0)", "beanie (>=1.25.0)", "bunnet (>=1.1.0,<2.0.0)", "databases (>=0.6.0)", "django (<5.0.0)", "mongoengine (>=0.23.1,<0.29.0)", "motor (>=2.5.1,<4.0.0)", "orm (>=0.3.1)", "ormar (>=0.11.2)", "piccolo (>=0.89,<0.122)", "pony (>=0.7.16,<0.8.0)", "scylla-driver (>=3.25.6,<4.0.0)", "sqlakeyset (>=2.0.1680321678,<3.0.0)", "sqlmodel (>=0.0.8,<0.0.15)", "tortoise-orm (>=0.16.18,!=0.21.0,<0.22.0)"]
+asyncpg = ["SQLAlchemy (>=1.3.20)", "asyncpg (>=0.24.0)"]
+beanie = ["beanie (>=1.25.0)"]
+bunnet = ["bunnet (>=1.1.0,<2.0.0)"]
+databases = ["databases (>=0.6.0)"]
+django = ["databases (>=0.6.0)", "django (<5.0.0)"]
+mongoengine = ["mongoengine (>=0.23.1,<0.29.0)"]
+motor = ["motor (>=2.5.1,<4.0.0)"]
+orm = ["databases (>=0.6.0)", "orm (>=0.3.1)"]
+ormar = ["ormar (>=0.11.2)"]
+piccolo = ["piccolo (>=0.89,<0.122)"]
+scylla-driver = ["scylla-driver (>=3.25.6,<4.0.0)"]
+sqlalchemy = ["SQLAlchemy (>=1.3.20)", "sqlakeyset (>=2.0.1680321678,<3.0.0)"]
+sqlmodel = ["sqlakeyset (>=2.0.1680321678,<3.0.0)", "sqlmodel (>=0.0.8,<0.0.15)"]
+tortoise = ["tortoise-orm (>=0.16.18,!=0.21.0,<0.22.0)"]
+
+[[package]]
 name = "fief-client"
 version = "0.19.0"
 description = "Fief Client for Python"
@@ -1952,6 +1984,23 @@ files = [
 ]
 
 [[package]]
+name = "sqlakeyset"
+version = "2.0.1724199169"
+description = "offset-free paging for sqlalchemy"
+optional = false
+python-versions = "<4.0,>=3.7"
+files = [
+    {file = "sqlakeyset-2.0.1724199169-py3-none-any.whl", hash = "sha256:f9a2048bc52c71a6afdbc3574f1ec20d2d13de9894fe1c794dd29d621bf44c97"},
+    {file = "sqlakeyset-2.0.1724199169.tar.gz", hash = "sha256:e11212531fe8ac1a04ce7735e332ba9c6f597520a23bd72b4812d973da718570"},
+]
+
+[package.dependencies]
+packaging = ">=20.0"
+python-dateutil = "*"
+sqlalchemy = ">=1.3.11"
+typing_extensions = ">=4,<5"
+
+[[package]]
 name = "sqlalchemy"
 version = "2.0.30"
 description = "Database Abstraction Library"
@@ -2674,4 +2723,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "77bdf0a8df54cc734fa29c58cd6e15763149b1ff9fa28a6a9985ef9b40969dd2"
+content-hash = "125c86d2f8cf2155763a1c7eea0f4d2d1d0c1baaaea1dea3c4f73ef089d1aa13"

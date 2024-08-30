@@ -1,7 +1,6 @@
-# Nocturnal App Backend
-
+# Noctural App Backend
 - api docs
-  `localhost:8000/docs`
+  - access swagger ui api documentation on localhost:8000/docs
 - local development
   - environment with configured postgres
   - script to lint code with `ruff` and `ruff format`
