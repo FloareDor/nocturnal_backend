@@ -1,6 +1,5 @@
 [tool.poetry]
 name = "fastapi-template"
-package-mode = false
 version = "0.1.0"
 description = "A template for kickstarting new FastAPI projects"
 authors = ["zhanymkanov"]
@@ -25,6 +24,8 @@ bcrypt = "^4.2.0"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 pytz = "^2024.1"
 slowapi = "^0.1.9"
+sqlakeyset = "^2.0.1724199169"
+fastapi-pagination = "^0.12.26"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4.8"
