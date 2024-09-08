@@ -167,6 +167,7 @@ async def social_login(
     supabase: AsyncClient,
     db_connection: Optional[AsyncConnection] = None,
 ) -> dict[str, Any]:
+    response = {}
     try:
         # Verify the Social ID token with Supabase
         response = await supabase.auth.sign_in_with_id(
@@ -214,6 +215,7 @@ async def social_login(
             )
 
         if not db_user:
+            await supabase.auth.admin.delete_user(response.user.id)
             raise HTTPException(
                 status_code=500,
                 detail=f"""
@@ -229,6 +231,7 @@ async def social_login(
         }
 
     except Exception as e:
+        await supabase.auth.admin.delete_user(response.user.id)
         print(f"{auth_data.provider} login exception:", e)
         raise DetailedError(e)
 
