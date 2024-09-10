@@ -4,11 +4,11 @@ from typing import Any, Optional
 from uuid import UUID
 
 from fastapi_pagination.ext.sqlalchemy import paginate
-from sqlalchemy import delete, insert, select, update
+from sqlalchemy import delete, insert, inspect, select, update
 from sqlalchemy.ext.asyncio import AsyncConnection
 
 from src.auth.models import Users_Table
-from src.bars.models import Bars_Table
+from src.bars.models import Bars, Bars_Table
 from src.bars.schemas import BarCreate, BarUpdate
 from src.database import execute, fetch_one
 
@@ -39,8 +39,14 @@ async def get_bar_by_user_id(
 
 
 async def get_bars(db: AsyncConnection):
-    query = select(Bars_Table).order_by(Bars_Table.c.created_at.desc())
-    return await paginate(conn=db, query=query)
+    columns = [c.name for c in inspect(Bars).columns]
+
+    exclude_fields = ["line_length_distribution", "cover_category_distribution"]
+    include_columns = [getattr(Bars, c) for c in columns if c not in exclude_fields]
+
+    query = select(*include_columns).select_from(Bars)
+
+    return await paginate(db, query)
 
 
 async def update_bar(

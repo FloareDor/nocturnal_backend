@@ -13,6 +13,7 @@ from slowapi.util import get_remote_address
 from starlette.middleware.cors import CORSMiddleware
 
 from src.auth.router import router as auth_router
+from src.bar_reports.router import router as bar_reports_router
 from src.bars.router import router as bars_router
 from src.config import app_configs, settings
 from src.exceptions import unified_exception_handler
@@ -66,6 +67,7 @@ async def healthcheck(request: Request) -> dict[str, str]:
 app.include_router(auth_router, prefix="", tags=["Auth"])
 app.include_router(posts_router, prefix="/posts", tags=["Posts"])
 app.include_router(bars_router, prefix="/bars", tags=["Bars"])
+app.include_router(bar_reports_router, prefix="/bar-report", tags=["Bar Reports"])
 
 # exception handlers
 app.add_exception_handler(RequestValidationError, unified_exception_handler)
