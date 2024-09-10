@@ -3,6 +3,8 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
+from src.bar_reports.schemas import CoverCategory, LineLengthCategory
+
 
 class BarBase(BaseModel):
     name: str = Field(..., example="The Cozy Corner")
@@ -52,9 +54,39 @@ class BarUpdate(BaseModel):
 class BarResponse(BarBase):
     id: int = Field(..., example=1)
     verified: bool = Field(..., example=True)
-    rating: Optional[float] = Field(None, example=0)
-    rating_count: int = Field(..., example=0)
+    rating: Optional[float] = Field(None, example=4.5)
+    rating_count: int = Field(..., example=128)
     created_at: datetime = Field(..., example="2023-08-30T14:30:00Z")
+    updated_at: datetime = Field(..., example="2023-08-30T14:30:00Z")
+
+    # Updated fields for line length and cover information
+    line_length: Optional[float] = Field(None, example=15.5)
+    line_length_category: Optional[LineLengthCategory] = Field(
+        None, example=LineLengthCategory.MEDIUM
+    )
+    # line_length_distribution: Optional[List[LineLengthCategory]] = Field(
+    #     None,
+    #     example=[
+    #         LineLengthCategory.SMALL,
+    #         LineLengthCategory.MEDIUM,
+    #         LineLengthCategory.MEDIUM,
+    #         LineLengthCategory.LONG,
+    #     ],
+    # )
+
+    cover_category: Optional[CoverCategory] = Field(
+        None, example=CoverCategory.MODERATE
+    )
+    # cover_category_distribution: Optional[List[CoverCategory]] = Field(
+    #     None,
+    #     example=[
+    #         CoverCategory.CHEAP,
+    #         CoverCategory.MODERATE,
+    #         CoverCategory.MODERATE,
+    #         CoverCategory.EXPENSIVE,
+    #     ],
+    # )
+    cover_price: Optional[float] = Field(None, example=10.50)
 
     class Config:
         from_attributes = True
@@ -71,5 +103,17 @@ class BarResponse(BarBase):
                 "rating": 4.5,
                 "rating_count": 128,
                 "created_at": "2023-08-30T14:30:00Z",
+                "updated_at": "2023-08-30T14:30:00Z",
+                "line_length": 15.5,
+                "line_length_category": "medium",
+                "line_length_distribution": ["small", "medium", "medium", "long"],
+                "cover_category": "moderate",
+                "cover_category_distribution": [
+                    "cheap",
+                    "moderate",
+                    "moderate",
+                    "expensive",
+                ],
+                "cover_price": 10.50,
             }
         }

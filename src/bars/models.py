@@ -2,17 +2,17 @@ from datetime import datetime, timezone
 from typing import List, Optional
 
 from sqlalchemy import (
+    ARRAY,
     DECIMAL,
     UUID,
     Boolean,
     DateTime,
+    Enum,
     ForeignKey,
     Identity,
     Integer,
     String,
 )
-
-# CheckConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.auth.models import Users
@@ -50,16 +50,27 @@ class Bars(Base):
         onupdate=datetime.now(timezone.utc),
     )
 
+    # New fields for averaged line length and cover information
+    line_length: Mapped[Optional[float]] = mapped_column(DECIMAL(10, 2), default=10)
+    line_length_category: Mapped[Optional[str]] = mapped_column(
+        Enum("small", "medium", "long", name="line_length_categories"), default="medium"
+    )
+    line_length_distribution: Mapped[Optional[List[str]]] = mapped_column(
+        ARRAY(String), default=["medium"]
+    )
+
+    cover_category: Mapped[Optional[str]] = mapped_column(
+        Enum("free", "cheap", "moderate", "expensive", name="cover_categories"),
+        default="moderate",
+    )
+    cover_category_distribution: Mapped[Optional[List[str]]] = mapped_column(
+        ARRAY(String), default=["moderate"]
+    )
+    cover_price: Mapped[Optional[float]] = mapped_column(DECIMAL(10, 2), default=10.00)
+
     admin: Mapped["Users"] = relationship(back_populates="administered_bars")
     posts: Mapped[List["Posts"]] = relationship(back_populates="bar")  # noqa: F821
     bar_reports: Mapped[List["BarReport"]] = relationship(back_populates="bar")
-
-    # __table_args__ = (
-    #     CheckConstraint(
-    #         "admin_id IN (SELECT id FROM users WHERE role IN ('superuser', 'bar_admin'))", # noqa: E501
-    #         name="check_admin_role",
-    #     ),
-    # )
 
 
 Bars_Table = Bars.__table__

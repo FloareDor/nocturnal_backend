@@ -1,8 +1,11 @@
+from uuid import UUID
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.jwt import parse_jwt_user_id
 from src.bar_reports import service as bar_report_service
+from src.bar_reports.dependencies import validate_bar_report
 from src.bar_reports.schemas import BarReportCreate, BarReportResponse
 from src.database import get_db_connection
 
@@ -12,11 +15,11 @@ router = APIRouter()
 @router.post("/", response_model=BarReportResponse)
 async def create_bar_report(
     report: BarReportCreate,
-    user_id: dict = Depends(parse_jwt_user_id),
+    user_id: UUID = Depends(validate_bar_report),
     db: AsyncSession = Depends(get_db_connection),
 ):
     return await bar_report_service.create_bar_report(
-        report.model_dump(exclude_unset=True), user_id
+        report.model_dump(exclude_unset=True), user_id=user_id, db=db
     )
 
 

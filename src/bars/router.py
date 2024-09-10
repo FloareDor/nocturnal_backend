@@ -1,9 +1,11 @@
 from typing import Tuple
+from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi_pagination import Page, add_pagination
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.auth.jwt import parse_jwt_user_id
 from src.bars import service as bars_service
 from src.bars.dependencies import valid_create_bar, validate_and_get_bar_id
 from src.bars.schemas import BarResponse, BarUpdate
@@ -22,7 +24,9 @@ async def create_bar(
 
 
 @router.get("/", response_model=Page[BarResponse])
-async def get_bars(db: AsyncSession = Depends(get_db_connection)):
+async def get_bars(
+    db: AsyncSession = Depends(get_db_connection), _: UUID = Depends(parse_jwt_user_id)
+):
     return await bars_service.get_bars(db=db)
 
 
