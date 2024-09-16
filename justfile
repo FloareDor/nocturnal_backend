@@ -1,8 +1,13 @@
+# Define default shell for Unix-like systems
+set shell := ["bash", "-cu"]
+
+set windows-powershell := true
+
 default:
   just --list
 
 run *args:
-  poetry run uvicorn src.main:app --reload {{args}}
+  poetry run uvicorn src.main:app --host 0.0.0.0 --reload {{args}}
 
 mm *args:
   poetry run alembic revision --autogenerate -m "{{args}}"
@@ -20,7 +25,7 @@ lint:
   poetry run ruff format src
   just ruff --fix
 
-# docker
+# Docker commands
 up:
   docker-compose up -d
 
@@ -32,5 +37,3 @@ build:
 
 ps:
   docker-compose ps
-
-set shell := ["cmd.exe", "/c"]
