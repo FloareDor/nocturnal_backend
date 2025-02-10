@@ -40,7 +40,7 @@ pip install poetry
 
 Other ways: [link](https://python-poetry.org/docs/#installation)
 
-### Setup Postgres (16.3)
+### Setup Postgres if we're not using supabase (16.3)
 ```shell
 just up
 ```
